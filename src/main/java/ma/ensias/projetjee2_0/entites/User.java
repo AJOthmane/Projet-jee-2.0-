@@ -14,8 +14,11 @@ public class User {
     private String email;
     private String password;
 
-    @OneToMany(mappedBy = "userId",cascade= CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private Set<Member> members = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private Set<PostLike> postlike = new HashSet<>();
 
     public User() {}
 

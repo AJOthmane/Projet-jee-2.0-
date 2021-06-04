@@ -1,46 +1,48 @@
 package ma.ensias.projetjee2_0.entites;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-public class Member implements Serializable {
+public class Member  {
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "userId")
-    @Id
-    private User userId;
+    @EmbeddedId
+    private MemberId id = new MemberId();
+
+    @ManyToOne
+    @MapsId("userId")
+    private User user;
 
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "topicId")
-    @Id
-    private Topic topicId;
+    @ManyToOne
+    @MapsId("topicId")
+    private Topic topic;
+
+
     private boolean isModerator;
 
     public Member() {}
 
-    public Member(User userId, Topic topicId, boolean isModerator) {
-        this.userId = userId;
-        this.topicId = topicId;
+    public Member(User User, Topic topicId, boolean isModerator) {
+        this.user = User;
+        this.topic = topicId;
         this.isModerator = isModerator;
     }
 
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Topic getTopicId() {
-        return topicId;
+        return topic;
     }
 
     public void setTopicId(Topic topicId) {
-        this.topicId = topicId;
+        this.topic = topicId;
     }
 
     public boolean isModerator() {
@@ -58,12 +60,12 @@ public class Member implements Serializable {
             return false;
 
         Member that = (Member) o;
-        return Objects.equals(this.userId, that.userId) &&
-                Objects.equals(this.topicId, that.topicId);
+        return Objects.equals(this.user, that.user) &&
+                Objects.equals(this.topic, that.topic);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, topicId);
+        return Objects.hash(user, topic);
     }
 }

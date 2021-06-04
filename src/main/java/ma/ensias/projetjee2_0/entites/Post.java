@@ -2,6 +2,8 @@ package ma.ensias.projetjee2_0.entites;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Post {
@@ -24,6 +26,9 @@ public class Post {
     private int type;
     @ManyToOne
     private User user;
+
+    @OneToMany(mappedBy = "post")
+    private Set<PostLike> postlike = new HashSet<>();
 
     public Post() {}
 

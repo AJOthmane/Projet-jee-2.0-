@@ -1,11 +1,11 @@
 package ma.ensias.projetjee2_0.entites;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 
 @Entity
 public class Topic {
@@ -18,7 +18,7 @@ public class Topic {
     private String iconUrl;
     private String coverUrl;
 
-    @OneToMany(mappedBy = "topicId",cascade= CascadeType.ALL)
+    @OneToMany(mappedBy = "topic")
     private Set<Member> members = new HashSet<>();
 
     public Topic(){ }
@@ -31,7 +31,7 @@ public class Topic {
         this.iconUrl = iconUrl;
         this.coverUrl = coverUrl;
         for(Member member : members) member.setTopicId(this);
-        this.members = Stream.of(members).collect(Collectors.toSet());
+        //this.members = Stream.of(members).collect(Collectors.toSet());
 
     }
 
