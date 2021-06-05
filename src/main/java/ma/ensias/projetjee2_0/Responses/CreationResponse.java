@@ -1,14 +1,14 @@
 package ma.ensias.projetjee2_0.Responses;
 
-public class SignUpResponse {
+public class CreationResponse {
 
     private boolean success;
     private String errors;
 
-    public SignUpResponse() {
+    public CreationResponse() {
     }
 
-    public SignUpResponse(boolean success, String errors) {
+    public CreationResponse(boolean success, String errors) {
         this.success = success;
         this.errors = errors;
     }

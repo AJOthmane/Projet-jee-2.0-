@@ -23,9 +23,9 @@ public class Member  {
 
     public Member() {}
 
-    public Member(User User, Topic topicId, boolean isModerator) {
+    public Member(User User, Topic topic, boolean isModerator) {
         this.user = User;
-        this.topic = topicId;
+        this.topic = topic;
         this.isModerator = isModerator;
     }
 

@@ -1,7 +1,7 @@
 package ma.ensias.projetjee2_0.controllers;
 
 import ma.ensias.projetjee2_0.Responses.CreationResponse;
-import ma.ensias.projetjee2_0.Services.SignUpService;
+import ma.ensias.projetjee2_0.Services.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,15 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 
 @RestController
-public class SignupController {
+public class TopicController {
 
 
     @Autowired
-    public SignUpService signUpService;
+    public TopicService topicService;
 
-    @PostMapping(value="/signup")
-    public CreationResponse SignUp(@RequestBody HashMap<String,String> user )
+    @PostMapping(value="/topic")
+    public CreationResponse getTopic(@RequestBody HashMap<String,String> topic)
     {
-        return signUpService.SignUp(user);
+        return topicService.createTopic(topic) ;
     }
+
+
 }
