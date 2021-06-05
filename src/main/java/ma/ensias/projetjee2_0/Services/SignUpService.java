@@ -1,8 +1,10 @@
 package ma.ensias.projetjee2_0.Services;
 
-import ma.ensias.projetjee2_0.Responses.SignUpResponse;
+import ma.ensias.projetjee2_0.Responses.CreationResponse;
 import ma.ensias.projetjee2_0.entites.User;
 import ma.ensias.projetjee2_0.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 
@@ -11,7 +13,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
+@Service
 public class SignUpService {
+
+    @Autowired
+    UserRepository userRepository;
 
     public static String getMd5(String input)
     {
@@ -26,7 +32,7 @@ public class SignUpService {
 
             String hashtext = no.toString(16);
             while (hashtext.length() < 32) {
-                hashtext = "0" + hashtext;
+                hashtext = "0"+hashtext;
             }
             return hashtext;
         }
@@ -35,13 +41,12 @@ public class SignUpService {
             throw new RuntimeException(e);
         }
     }
-    public SignUpResponse SignUp(HashMap<String,String> user,UserRepository userRepositoryArg)
+    public CreationResponse SignUp(HashMap<String,String> user)
     {
-        UserRepository userRepository = userRepositoryArg;
         String username = user.get("username"), password = user.get("password"), email = user.get("email");
         boolean success = true;
         String errors = null;
-        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        String regex = "^[\\w-_.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
         User userFoundByEmail = userRepository.findByEmailEquals(email);
         User userFoundByUsername = userRepository.findByUsernameEquals(username);
         if(userFoundByUsername != null && userFoundByEmail == null   )
@@ -70,6 +75,6 @@ public class SignUpService {
            userRepository.save(new User(username,getMd5(password),email));
 
         }
-        return  new SignUpResponse(success,errors);
+        return  new CreationResponse(success,errors);
     }
 }
