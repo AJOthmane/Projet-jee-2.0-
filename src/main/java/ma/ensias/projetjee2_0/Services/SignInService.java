@@ -13,7 +13,7 @@ public class SignInService {
     @Autowired
     UserRepository userRepository;
 
-    private static final String USER_SESSION = "userSession";
+    public static final String USER_SESSION = "userSession";
 
     public SignInResponse signIn(String username, String password, HttpSession session)
     {
@@ -29,7 +29,7 @@ public class SignInService {
         }
         else
         {
-            return new SignInResponse(true,"SignIn successfully",user.getId());
+            return new SignInResponse(true,user.getId());
         }
     }
 }
