@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
+
 @RestController
 public class SignInController {
 
@@ -14,7 +16,7 @@ public class SignInController {
     public SignInService signInService;
 
     @PostMapping(value="/signin")
-    public SignInResponse SignIn(@RequestParam(value = "username") String username,@RequestParam(value = "password") String password){
-        return signInService.signIn(username,password);
+    public SignInResponse SignIn(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpSession session){
+        return signInService.signIn(username,password,session);
     }
 }

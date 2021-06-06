@@ -6,14 +6,19 @@ import ma.ensias.projetjee2_0.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
+
 @Service
 public class SignInService {
     @Autowired
     UserRepository userRepository;
 
-    public SignInResponse signIn(String username,String password)
+    private static final String USER_SESSION = "userSession";
+
+    public SignInResponse signIn(String username, String password, HttpSession session)
     {
         User user = userRepository.findByUsernameEquals(username);
+        session.setAttribute(USER_SESSION,user);
         if(user == null)
         {
             return new SignInResponse(false,"Nonexistent username");
