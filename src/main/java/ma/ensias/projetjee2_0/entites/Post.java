@@ -55,6 +55,7 @@ public class Post {
         this.topic = topic;
         this.type = type;
         this.user = user;
+        this.date = new Date();
     }
 
     public Post(String title, Content content, User user) {

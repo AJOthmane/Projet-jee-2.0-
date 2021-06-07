@@ -38,7 +38,7 @@ public class TopicService {
         int idUser = Integer.parseInt(topic.get("idUser"));
         Boolean success = true;
         Topic topicFound = topicRepository.findTopicByTitleEquals(title);
-        User userOfTheSession = userRepository.findById(idUser).orElse(null);
+        User userOfTheSession = userRepository.findById(idUser);
 
         if(topicFound != null )
         {
