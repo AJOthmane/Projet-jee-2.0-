@@ -1,14 +1,16 @@
 package ma.ensias.projetjee2_0.Responses;
 
+import java.util.Map;
+
 public class CreationResponse {
 
     private boolean success;
-    private String errors;
+    private Map<String,String> errors;
 
-    public CreationResponse() {
-    }
+    public CreationResponse() { }
 
-    public CreationResponse(boolean success, String errors) {
+    public CreationResponse(boolean success,Map<String,String> errors)
+    {
         this.success = success;
         this.errors = errors;
     }
@@ -25,11 +27,11 @@ public class CreationResponse {
         this.success = success;
     }
 
-    public String getErrors() {
+    public Map<String,String> getErrors() {
         return errors;
     }
 
-    public void setErrors(String errors) {
+    public void setErrors(Map<String,String> errors) {
         this.errors = errors;
     }
 }

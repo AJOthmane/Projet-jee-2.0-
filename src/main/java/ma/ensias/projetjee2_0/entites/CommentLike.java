@@ -20,10 +20,10 @@ public class CommentLike {
 
     private boolean isLike;
 
-    public CommentLike() {
-    }
+    public CommentLike() { }
 
-    public CommentLike(CommentLikeId id, User user, Comment comment,boolean isLike) {
+    public CommentLike(CommentLikeId id, User user, Comment comment,boolean isLike)
+    {
         this.id = id;
         this.user = user;
         this.comment = comment;
@@ -54,11 +54,13 @@ public class CommentLike {
         this.comment = comment;
     }
 
-    public boolean isLike() {
+    public boolean isLike()
+    {
         return isLike;
     }
 
-    public void setLike(boolean like) {
+    public void setLike(boolean like)
+    {
         isLike = like;
     }
 }

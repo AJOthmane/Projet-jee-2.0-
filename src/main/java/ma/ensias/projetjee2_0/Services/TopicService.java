@@ -13,8 +13,13 @@ import ma.ensias.projetjee2_0.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.util.ArrayList;
+
+import javax.servlet.http.HttpSession;
+
 import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class TopicService {
@@ -28,33 +33,88 @@ public class TopicService {
     @Autowired
     PostRepository postRepository;
 
-    public CreationResponse createTopic(HashMap<String,String> topic)
-    {
-        String  title = topic.get("title"),
-                description = topic.get("description"),
-                icon = topic.get("icon"),
-                cover = topic.get("cover"),
-                error=null;
-        int idUser = Integer.parseInt(topic.get("idUser"));
-        Boolean success = true;
-        Topic topicFound = topicRepository.findTopicByTitleEquals(title);
-        User userOfTheSession = userRepository.findById(idUser);
+    public static final String USER_SESSION = "userSession";
 
-        if(topicFound != null )
+    public CreationResponse createTopic(String title,
+                                        String description,
+                                        String icon,
+                                        String cover,
+                                        HttpSession session)
+    {
+        Map<String,String> error=null;
+        boolean success = true;
+        Topic topicFound = topicRepository.findTopicByTitleEquals(title);
+        User userOfSession = (User)session.getAttribute(USER_SESSION);
+
+        if(userOfSession == null)
+        {
+            error = new HashMap<>();
+            error.put("Login","disconnected");
+            success = false;
+        }
+        else
+        {
+            if (topicFound != null)
+            {
+                success = false;
+                error = new HashMap<>();
+                error.put("title","title already in use");
+            }
+            else if( title.isEmpty())
+            {
+                success = false;
+                error = new HashMap<>();
+                error.put("fields","Title empty");
+            }
+
+            if (success)
+            {
+                Topic topicCreated = topicRepository.save(new Topic(title, description, icon, cover));
+                Member member = new Member(userOfSession, topicCreated, true);
+                memberRepository.save(member);
+            }
+        }
+        return new CreationResponse(success,error);
+    }
+
+    public CreationResponse joinTopic(int idTopic, HttpSession session)
+    {
+        Map<String,String> error=null;
+        boolean success = true;
+        Topic topic = null;
+        User userOfSession = (User)session.getAttribute(USER_SESSION);
+
+        if(topicRepository.findById(idTopic).isPresent())
+            topic = topicRepository.findById(idTopic).get();
+
+        if(userOfSession == null)
         {
             success = false;
-            error = "title already in use";
+            error = new HashMap<>();
+            error.put("Login","Disconnected");
         }
-        else if(userOfTheSession == null)
+        else
         {
-            success = false;
-            error = "No user found";
-        }
-        if(success)
-        {
-            Topic topicCreated = topicRepository.save(new Topic(title,description,icon,cover));
-            Member member = new Member(userOfTheSession, topicCreated, true);
-            memberRepository.save(member);
+            if (topic == null)
+            {
+                success = false;
+                error = new HashMap<>();
+                error.put("topic","Topic not found");
+            }
+            else
+            {
+                Member member = new Member(userOfSession, topic, true);
+                try
+                {
+                    memberRepository.save(member);
+                }
+                catch (Exception e)
+                {
+                    success = false;
+                    error = new HashMap<>();
+                    error.put("topic","already exist");
+                }
+            }
         }
         return new CreationResponse(success,error);
     }
