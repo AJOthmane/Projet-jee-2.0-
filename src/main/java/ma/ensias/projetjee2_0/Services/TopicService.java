@@ -10,7 +10,7 @@ import ma.ensias.projetjee2_0.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import javax.servlet.http.HttpSession;
 
 @Service
 public class TopicService {
@@ -24,28 +24,62 @@ public class TopicService {
 
     public static final String USER_SESSION = "userSession";
 
-    //  a changer
-    public CreationResponse createTopic(HashMap<String,String> topic,User user)
+    public CreationResponse createTopic(String title,
+                                        String description,
+                                        String icon,
+                                        String cover,
+                                        HttpSession session)
     {
-        String  title = topic.get("title"),
-                description = topic.get("description"),
-                icon = topic.get("icon"),
-                cover = topic.get("cover"),
-                error=null;
+        String error=null;
         boolean success = true;
         Topic topicFound = topicRepository.findTopicByTitleEquals(title);
-
-        if(topicFound != null )
+        User userOfSession = (User)session.getAttribute(USER_SESSION);
+        if(userOfSession == null)
         {
+            error = "disconnected";
             success = false;
-            error = "title already in use";
         }
-
-        if(success)
+        else
         {
-            Topic topicCreated = topicRepository.save(new Topic(title,description,icon,cover));
-            Member member = new Member(user, topicCreated, true);
-            memberRepository.save(member);
+            if (topicFound != null) {
+                success = false;
+                error = "title already in use";
+            }
+            else if( title.isEmpty())
+            {
+                success = false;
+                error = "Title empty";
+            }
+
+            if (success) {
+                Topic topicCreated = topicRepository.save(new Topic(title, description, icon, cover));
+                Member member = new Member(userOfSession, topicCreated, true);
+                memberRepository.save(member);
+            }
+        }
+        return new CreationResponse(success,error);
+    }
+
+    public CreationResponse joinTopic(int idTopic, HttpSession session)
+    {
+        String error=null;
+        boolean success = true;
+        Topic topic = topicRepository.findById(idTopic).get();
+        User userOfSession = (User)session.getAttribute(USER_SESSION);
+        if(userOfSession == null)
+        {
+            error="Disconnected";
+            success = false;
+        }
+        else
+        {
+            if (topic == null) {
+                success = false;
+                error = "Topic not found";
+            } else {
+                Member member = new Member(userOfSession, topic, true);
+                memberRepository.save(member);
+            }
         }
         return new CreationResponse(success,error);
     }

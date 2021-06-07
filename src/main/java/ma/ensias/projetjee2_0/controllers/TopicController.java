@@ -2,14 +2,12 @@ package ma.ensias.projetjee2_0.controllers;
 
 import ma.ensias.projetjee2_0.Responses.CreationResponse;
 import ma.ensias.projetjee2_0.Services.TopicService;
-import ma.ensias.projetjee2_0.entites.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 
 @RestController
 public class TopicController {
@@ -19,9 +17,22 @@ public class TopicController {
     public TopicService topicService;
 
     @PostMapping(value="/topic")
-    public CreationResponse getTopic(@RequestBody HashMap<String,String> topic, HttpSession session)
+    public CreationResponse getTopic(@RequestParam String title,
+                                     @RequestParam String description,
+                                     @RequestParam String icon,
+                                     @RequestParam String cover,
+                                                   HttpSession session)
     {
-        return topicService.createTopic(topic,(User)session.getAttribute(TopicService.USER_SESSION)) ;
+        return topicService.createTopic(title,
+                                        description,
+                                        icon,
+                                        cover,
+                                        session) ;
+    }
+    @PostMapping(value="/jointopic")
+    public CreationResponse joinTopic(@RequestParam(value="idtopic") int idTopic, HttpSession session)
+    {
+        return topicService.joinTopic(idTopic,session) ;
     }
 
 }
