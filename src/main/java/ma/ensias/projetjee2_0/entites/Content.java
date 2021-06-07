@@ -12,8 +12,8 @@ public abstract class Content {
     @JoinColumn(name = "post", referencedColumnName = "id")
     private Post post;
 
-    public int getId() {
-
+    public int getId()
+    {
         return id;
     }
 

@@ -32,7 +32,6 @@ public class TopicController {
     @PostMapping(value="/jointopic")
     public CreationResponse joinTopic(@RequestParam(value="idtopic") int idTopic, HttpSession session)
     {
-        return topicService.joinTopic(idTopic,session) ;
+        return topicService.joinTopic(idTopic, session);
     }
-
 }

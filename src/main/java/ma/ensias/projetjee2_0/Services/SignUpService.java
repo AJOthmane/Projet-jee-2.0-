@@ -10,6 +10,8 @@ import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class SignUpService {
@@ -44,31 +46,28 @@ public class SignUpService {
     public CreationResponse SignUp(String username, String password, String email, HttpSession session)
     {
         boolean success = true;
-        String errors = null;
         String regex = "^[\\w-_.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        Map<String,String> errors = null;
         User userFoundByEmail = userRepository.findByEmailEquals(email);
         User userFoundByUsername = userRepository.findByUsernameEquals(username);
         if(userFoundByUsername != null && userFoundByEmail == null   )
         {
             success = false;
-            errors = "Username already in use ";
+            errors = new HashMap<>();
+            errors.put("username","Username already in use ");
         }
         else if(userFoundByUsername == null && userFoundByEmail != null )
         {
             success = false;
-            errors = "Email already in use ";
-        }
-        else if(userFoundByUsername != null && userFoundByEmail != null)
-        {
-            success = false;
-            errors = "Email & Username  already in use ";
+            errors = new HashMap<>();
+            errors.put("email","Email already in use ");
         }
         else if(!email.matches(regex))
         {
             success = false;
-            errors = "Email form invalid";
+            errors = new HashMap<>();
+            errors.put("email","Email form invalid");
         }
-
         if(success)
         {
            User user = userRepository.save(new User(username,getMd5(password),email));

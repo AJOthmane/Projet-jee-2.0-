@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class TopicService {
@@ -30,28 +32,34 @@ public class TopicService {
                                         String cover,
                                         HttpSession session)
     {
-        String error=null;
+        Map<String,String> error=null;
         boolean success = true;
         Topic topicFound = topicRepository.findTopicByTitleEquals(title);
         User userOfSession = (User)session.getAttribute(USER_SESSION);
+
         if(userOfSession == null)
         {
-            error = "disconnected";
+            error = new HashMap<>();
+            error.put("Login","disconnected");
             success = false;
         }
         else
         {
-            if (topicFound != null) {
+            if (topicFound != null)
+            {
                 success = false;
-                error = "title already in use";
+                error = new HashMap<>();
+                error.put("title","title already in use");
             }
             else if( title.isEmpty())
             {
                 success = false;
-                error = "Title empty";
+                error = new HashMap<>();
+                error.put("fields","Title empty");
             }
 
-            if (success) {
+            if (success)
+            {
                 Topic topicCreated = topicRepository.save(new Topic(title, description, icon, cover));
                 Member member = new Member(userOfSession, topicCreated, true);
                 memberRepository.save(member);
@@ -62,23 +70,41 @@ public class TopicService {
 
     public CreationResponse joinTopic(int idTopic, HttpSession session)
     {
-        String error=null;
+        Map<String,String> error=null;
         boolean success = true;
-        Topic topic = topicRepository.findById(idTopic).get();
+        Topic topic = null;
         User userOfSession = (User)session.getAttribute(USER_SESSION);
+
+        if(topicRepository.findById(idTopic).isPresent())
+            topic = topicRepository.findById(idTopic).get();
+
         if(userOfSession == null)
         {
-            error="Disconnected";
             success = false;
+            error = new HashMap<>();
+            error.put("Login","Disconnected");
         }
         else
         {
-            if (topic == null) {
+            if (topic == null)
+            {
                 success = false;
-                error = "Topic not found";
-            } else {
+                error = new HashMap<>();
+                error.put("topic","Topic not found");
+            }
+            else
+            {
                 Member member = new Member(userOfSession, topic, true);
-                memberRepository.save(member);
+                try
+                {
+                    memberRepository.save(member);
+                }
+                catch (Exception e)
+                {
+                    success = false;
+                    error = new HashMap<>();
+                    error.put("topic","already exist");
+                }
             }
         }
         return new CreationResponse(success,error);

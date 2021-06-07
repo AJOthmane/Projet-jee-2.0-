@@ -10,10 +10,10 @@ public class CommentLikeId implements Serializable {
     private int userId;
     private int commentId;
 
-    public CommentLikeId() {
-    }
+    public CommentLikeId() { }
 
-    public CommentLikeId(int userId, int commentId) {
+    public CommentLikeId(int userId, int commentId)
+    {
         this.userId = userId;
         this.commentId = commentId;
     }
@@ -35,7 +35,8 @@ public class CommentLikeId implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o)
+    {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CommentLikeId that = (CommentLikeId) o;
@@ -43,7 +44,8 @@ public class CommentLikeId implements Serializable {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(userId, commentId);
     }
 }
