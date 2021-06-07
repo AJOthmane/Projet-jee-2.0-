@@ -22,32 +22,29 @@ public class TopicService {
     @Autowired
     MemberRepository memberRepository;
 
-    public CreationResponse createTopic(HashMap<String,String> topic)
+    public static final String USER_SESSION = "userSession";
+
+    //  a changer
+    public CreationResponse createTopic(HashMap<String,String> topic,User user)
     {
         String  title = topic.get("title"),
                 description = topic.get("description"),
                 icon = topic.get("icon"),
                 cover = topic.get("cover"),
                 error=null;
-        int idUser = Integer.parseInt(topic.get("idUser"));
-        Boolean success = true;
+        boolean success = true;
         Topic topicFound = topicRepository.findTopicByTitleEquals(title);
-        User userOfTheSession = userRepository.findById(idUser).orElse(null);
 
         if(topicFound != null )
         {
             success = false;
             error = "title already in use";
         }
-        else if(userOfTheSession == null)
-        {
-            success = false;
-            error = "No user found";
-        }
+
         if(success)
         {
             Topic topicCreated = topicRepository.save(new Topic(title,description,icon,cover));
-            Member member = new Member(userOfTheSession, topicCreated, true);
+            Member member = new Member(user, topicCreated, true);
             memberRepository.save(member);
         }
         return new CreationResponse(success,error);
