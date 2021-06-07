@@ -49,7 +49,15 @@ public class Post {
         else
             type = INVITATION;
     }
-    public Post(String title,Content content,User user) {
+
+    public Post(String title, Topic topic, int type, User user) {
+        this.title = title;
+        this.topic = topic;
+        this.type = type;
+        this.user = user;
+    }
+
+    public Post(String title, Content content, User user) {
 
         this.title = title;
         this.content = content;
