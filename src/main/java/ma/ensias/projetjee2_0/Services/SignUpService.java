@@ -6,18 +6,20 @@ import ma.ensias.projetjee2_0.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
-
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class SignUpService {
 
     @Autowired
     UserRepository userRepository;
+
+    private static final String USER_SESSION = "userSession";
 
     public static String getMd5(String input)
     {
@@ -41,38 +43,35 @@ public class SignUpService {
             throw new RuntimeException(e);
         }
     }
-    public CreationResponse SignUp(HashMap<String,String> user)
+    public CreationResponse SignUp(String username, String password, String email, HttpSession session)
     {
-        String username = user.get("username"), password = user.get("password"), email = user.get("email");
         boolean success = true;
-        String errors = null;
         String regex = "^[\\w-_.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        Map<String,String> errors = null;
         User userFoundByEmail = userRepository.findByEmailEquals(email);
         User userFoundByUsername = userRepository.findByUsernameEquals(username);
         if(userFoundByUsername != null && userFoundByEmail == null   )
         {
             success = false;
-            errors = "Username already in use ";
+            errors = new HashMap<>();
+            errors.put("username","Username already in use ");
         }
         else if(userFoundByUsername == null && userFoundByEmail != null )
         {
             success = false;
-            errors = "Email already in use ";
-        }
-        else if(userFoundByUsername != null && userFoundByEmail != null)
-        {
-            success = false;
-            errors = "Email & Username  already in use ";
+            errors = new HashMap<>();
+            errors.put("email","Email already in use ");
         }
         else if(!email.matches(regex))
         {
             success = false;
-            errors = "Email form invalid";
+            errors = new HashMap<>();
+            errors.put("email","Email form invalid");
         }
-
         if(success)
         {
-           userRepository.save(new User(username,getMd5(password),email));
+           User user = userRepository.save(new User(username,getMd5(password),email));
+           session.setAttribute(USER_SESSION,user);
 
         }
         return  new CreationResponse(success,errors);

@@ -20,8 +20,8 @@ public class Comment {
 
 
 
-    public Comment(String text, User user, Post post) {
-
+    public Comment(String text, User user, Post post)
+    {
         this.text = text;
         this.user = user;
         this.likes = this.dislikes = 0;
@@ -29,11 +29,7 @@ public class Comment {
         this.date = new Date();
     }
 
-    public Comment()
-    {
-
-    }
-
+    public Comment() { }
 
     public int getId() {
         return id;
@@ -90,6 +86,5 @@ public class Comment {
     public void setUser(User user) {
         this.user = user;
     }
-
 
 }
