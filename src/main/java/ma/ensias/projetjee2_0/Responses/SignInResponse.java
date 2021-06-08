@@ -13,9 +13,8 @@ public class SignInResponse {
         this.errors = errors;
     }
 
-    public SignInResponse(boolean success, String errors, int id) {
+    public SignInResponse(boolean success, int id) {
         this.success = success;
-        this.errors = errors;
         this.id = id;
     }
 

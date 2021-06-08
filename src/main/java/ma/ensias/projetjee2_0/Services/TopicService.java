@@ -1,16 +1,23 @@
 package ma.ensias.projetjee2_0.Services;
 
 import ma.ensias.projetjee2_0.Responses.CreationResponse;
+import ma.ensias.projetjee2_0.Responses.GetTopicResponse;
 import ma.ensias.projetjee2_0.entites.Member;
+import ma.ensias.projetjee2_0.entites.Post;
 import ma.ensias.projetjee2_0.entites.Topic;
 import ma.ensias.projetjee2_0.entites.User;
 import ma.ensias.projetjee2_0.repositories.MemberRepository;
+import ma.ensias.projetjee2_0.repositories.PostRepository;
 import ma.ensias.projetjee2_0.repositories.TopicRepository;
 import ma.ensias.projetjee2_0.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpSession;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +30,8 @@ public class TopicService {
     UserRepository userRepository;
     @Autowired
     MemberRepository memberRepository;
+    @Autowired
+    PostRepository postRepository;
 
     public static final String USER_SESSION = "userSession";
 
@@ -108,5 +117,21 @@ public class TopicService {
             }
         }
         return new CreationResponse(success,error);
+    }
+
+    public GetTopicResponse searchTopic(int id, User user) {
+        Topic topic = topicRepository.findById(id);
+        if(topic == null)
+        {
+            return new GetTopicResponse(false,"Nonexistent topic");
+        }
+        GetTopicResponse response = new GetTopicResponse(true,topic);
+        if(user != null)
+        {
+            response.setJoined(memberRepository.existsByTopic_idAndUser_id(topic.getId(), user.getId()));
+        }
+
+        response.setPosts((ArrayList<Post>) postRepository.findAllByTopic_idEquals(topic.getId()));
+        return response;
     }
 }

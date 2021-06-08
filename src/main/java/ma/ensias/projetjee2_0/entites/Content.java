@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public abstract class Content {
     @Id
+    @GeneratedValue
     private int id;
 
     @OneToOne(cascade = CascadeType.ALL)

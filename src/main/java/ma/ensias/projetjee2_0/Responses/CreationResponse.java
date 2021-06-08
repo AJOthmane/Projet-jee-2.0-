@@ -15,6 +15,10 @@ public class CreationResponse {
         this.errors = errors;
     }
 
+    public CreationResponse(boolean success) {
+        this.success = success;
+    }
+
     public boolean isSuccess() {
         return success;
     }
