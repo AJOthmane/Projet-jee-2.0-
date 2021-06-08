@@ -2,6 +2,7 @@ package ma.ensias.projetjee2_0.Services;
 
 import ma.ensias.projetjee2_0.Responses.CreationResponse;
 import ma.ensias.projetjee2_0.Responses.GetTopicResponse;
+import ma.ensias.projetjee2_0.Responses.SearchResponse;
 import ma.ensias.projetjee2_0.entites.Member;
 import ma.ensias.projetjee2_0.entites.Post;
 import ma.ensias.projetjee2_0.entites.Topic;
@@ -133,5 +134,17 @@ public class TopicService {
 
         response.setPosts((ArrayList<Post>) postRepository.findAllByTopic_idEquals(topic.getId()));
         return response;
+    }
+
+    public SearchResponse searchTopic(String searchtop) {
+        boolean success = true;
+        ArrayList<Topic> topics = new ArrayList<>();
+
+        topics = topicRepository.findTopicsByTitleContaining(searchtop);
+
+        if (topics.size() == 0) {
+            success = false;
+        } 
+        return new SearchResponse(success, topics);
     }
 }

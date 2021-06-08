@@ -2,6 +2,7 @@ package ma.ensias.projetjee2_0.controllers;
 
 import ma.ensias.projetjee2_0.Responses.CreationResponse;
 import ma.ensias.projetjee2_0.Responses.GetTopicResponse;
+import ma.ensias.projetjee2_0.Responses.SearchResponse;
 import ma.ensias.projetjee2_0.Services.SignInService;
 import ma.ensias.projetjee2_0.Services.TopicService;
 import ma.ensias.projetjee2_0.entites.User;
@@ -45,5 +46,11 @@ public class TopicController {
     public GetTopicResponse getTopic(@RequestParam(value = "id") int id, HttpSession session)
     {
         return topicService.searchTopic(id,(User)session.getAttribute(SignInService.USER_SESSION));
+    }
+
+    @GetMapping(value="/searchtopic")
+    public SearchResponse searchTopic(@RequestParam String searchtop) 
+    {
+        return topicService.searchTopic(searchtop);
     }
 }
