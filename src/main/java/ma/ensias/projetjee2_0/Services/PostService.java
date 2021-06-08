@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 @Service
 public class PostService {
@@ -20,17 +21,21 @@ public class PostService {
 
     Post post;
     Content content;
+    HashMap<String,String> errors = new HashMap<String,String>();
+
     public CreationResponse createInvitation(String titre, String location, String date, String description, int topic, User user) {
         Date formatedDate;
         try {
             formatedDate = new SimpleDateFormat("dd/MM/yyyy").parse(date);
         } catch (ParseException e) {
-            return new CreationResponse(false,"wrong date format");
+            errors.put("date", "Invalid date");
+            return new CreationResponse(false,errors);
         }
         Topic topicObject = topicRepository.findById(topic);
         if(topicObject == null)
         {
-            return new CreationResponse(false,"nonexistent topic");
+            errors.put("idTopic","nonexistent topic");
+            return new CreationResponse(false,errors);
         }
 
         post = new Post(titre,topicObject,Post.INVITATION,user);
@@ -47,7 +52,8 @@ public class PostService {
         Topic topicObject = topicRepository.findById(topic);
         if(topicObject == null)
         {
-            return new CreationResponse(false,"nonexistent topic");
+            errors.put("idTopic","nonexistent topic");
+            return new CreationResponse(false,errors);
         }
         post = new Post(titre,topicObject,Post.TEXT,user);
         content = new Text(text);
@@ -63,7 +69,8 @@ public class PostService {
         Topic topicObject = topicRepository.findById(topic);
         if(topicObject == null)
         {
-            return new CreationResponse(false,"nonexistent topic");
+            errors.put("idTopic","nonexistent topic");
+            return new CreationResponse(false,errors);
         }
         post = new Post(titre,topicObject,Post.IMAGE,user);
         content = new Image(url);
@@ -76,7 +83,8 @@ public class PostService {
     }
 
     public CreationResponse NoTypeOfContent() {
-        return new CreationResponse(false,"Nonexistent type of content");
+        errors.put("fields","missing type of content field value");
+        return new CreationResponse(false,errors);
     }
 
 }

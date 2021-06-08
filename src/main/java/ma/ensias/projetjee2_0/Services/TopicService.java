@@ -84,8 +84,8 @@ public class TopicService {
         Topic topic = null;
         User userOfSession = (User)session.getAttribute(USER_SESSION);
 
-        if(topicRepository.findById(idTopic).isPresent())
-            topic = topicRepository.findById(idTopic).get();
+
+        topic = topicRepository.findById(idTopic);
 
         if(userOfSession == null)
         {
