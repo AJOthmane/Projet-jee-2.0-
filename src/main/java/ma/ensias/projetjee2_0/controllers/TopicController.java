@@ -1,6 +1,7 @@
 package ma.ensias.projetjee2_0.controllers;
 
 import ma.ensias.projetjee2_0.Responses.CreationResponse;
+import ma.ensias.projetjee2_0.Responses.SearchResponse;
 import ma.ensias.projetjee2_0.Services.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 @RestController
 public class TopicController {
@@ -34,4 +37,11 @@ public class TopicController {
     {
         return topicService.joinTopic(idTopic, session);
     }
+
+    @GetMapping(value="/searchtopic")
+    public SearchResponse searchTopic(@RequestParam String searchtop) 
+    {
+        return topicService.searchTopic(searchtop);
+    }
+    
 }
