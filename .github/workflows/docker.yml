@@ -18,7 +18,7 @@ on:
 env:
   # TODO: Change variable to your image's name.
   REGISTRY: ghcr.io
-  IMAGE_NAME: projet-spring-forum
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   # Run tests.
