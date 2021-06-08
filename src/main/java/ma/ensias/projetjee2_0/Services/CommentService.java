@@ -10,6 +10,8 @@ import ma.ensias.projetjee2_0.entites.User;
 import ma.ensias.projetjee2_0.repositories.CommentRepository;
 import ma.ensias.projetjee2_0.repositories.PostRepository;
 
+import java.util.Map;
+
 @Service
 public class CommentService {
     
@@ -20,7 +22,7 @@ public class CommentService {
     CommentRepository commentRepository;
 
     public CreationResponse insertComment(int post, String comment, User user){
-        Map<String,String> errors;
+        Map<String,String> errors = new HashMap<>();
         Post postObj = postRepository.findById(post);
 
         if(postObj == null){
