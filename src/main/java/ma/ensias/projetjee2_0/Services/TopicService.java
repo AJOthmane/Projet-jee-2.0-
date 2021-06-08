@@ -124,7 +124,9 @@ public class TopicService {
         Topic topic = topicRepository.findById(id);
         if(topic == null)
         {
-            return new GetTopicResponse(false,"Nonexistent topic");
+            HashMap<String,String> errors = new HashMap<String,String>();
+            errors.put("topic","Nonexistent topic");
+            return new GetTopicResponse(false,errors);
         }
         GetTopicResponse response = new GetTopicResponse(true,topic);
         if(user != null)

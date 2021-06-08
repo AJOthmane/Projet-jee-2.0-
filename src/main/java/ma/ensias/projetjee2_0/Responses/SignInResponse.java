@@ -1,8 +1,11 @@
 package ma.ensias.projetjee2_0.Responses;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SignInResponse {
     private boolean success;
-    private String errors;
+    private Map<String,String> errors;
     private int id;
 
     public SignInResponse() {
@@ -10,7 +13,8 @@ public class SignInResponse {
 
     public SignInResponse(boolean success, String errors) {
         this.success = success;
-        this.errors = errors;
+        this.errors = new HashMap<String,String>();
+        this.errors.put("fields",errors);
     }
 
     public SignInResponse(boolean success, int id) {
@@ -22,9 +26,6 @@ public class SignInResponse {
         this.success = success;
     }
 
-    public void setErrors(String errors) {
-        this.errors = errors;
-    }
 
     public void setId(int id) {
         this.id = id;
@@ -34,7 +35,7 @@ public class SignInResponse {
         return success;
     }
 
-    public String getErrors() {
+    public Map<String, String> getErrors() {
         return errors;
     }
 
