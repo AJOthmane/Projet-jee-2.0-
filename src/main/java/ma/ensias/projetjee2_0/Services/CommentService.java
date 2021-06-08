@@ -11,6 +11,7 @@ import ma.ensias.projetjee2_0.repositories.CommentRepository;
 import ma.ensias.projetjee2_0.repositories.PostRepository;
 
 import java.util.Map;
+import java.util.HashMap;
 
 @Service
 public class CommentService {
