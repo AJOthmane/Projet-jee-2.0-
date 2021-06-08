@@ -49,7 +49,7 @@ public class TopicController {
     }
 
     @GetMapping(value="/searchtopic")
-    public SearchResponse searchTopic(@RequestParam String topic) 
+    public SearchResponse searchTop(@RequestParam String topic) 
     {
         return topicService.searchTopic(topic);
     }

@@ -2,11 +2,14 @@ package ma.ensias.projetjee2_0.controllers;
 
 
 import ma.ensias.projetjee2_0.Responses.CreationResponse;
+import ma.ensias.projetjee2_0.Responses.GetPostResponse;
 import ma.ensias.projetjee2_0.Responses.SignInResponse;
 import ma.ensias.projetjee2_0.Services.PostService;
 import ma.ensias.projetjee2_0.Services.SignInService;
 import ma.ensias.projetjee2_0.entites.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,4 +60,10 @@ public class PostController {
                 return  postService.NoTypeOfContent();
         }
     }
+
+    @GetMapping(value="/post")
+    public GetPostResponse getPostMethod(@RequestParam int id) {
+        return postService.getPost(id);
+    }
+    
 }
