@@ -6,6 +6,7 @@ public class CreationResponse {
 
     private boolean success;
     private Map<String,String> errors;
+    private String error;
 
     public CreationResponse() { }
 
@@ -13,6 +14,12 @@ public class CreationResponse {
     {
         this.success = success;
         this.errors = errors;
+    }
+
+    public CreationResponse(boolean success, String error)
+    {
+        this.success = success;
+        this.error = error;
     }
 
     public CreationResponse(boolean success) {
