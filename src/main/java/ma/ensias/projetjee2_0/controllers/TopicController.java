@@ -49,8 +49,8 @@ public class TopicController {
     }
 
     @GetMapping(value="/searchtopic")
-    public SearchResponse searchTopic(@RequestParam String searchtop) 
+    public SearchResponse searchTop(@RequestParam String topic) 
     {
-        return topicService.searchTopic(searchtop);
+        return topicService.searchTopic(topic);
     }
 }

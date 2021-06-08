@@ -1,7 +1,9 @@
 package ma.ensias.projetjee2_0.Services;
 
 import ma.ensias.projetjee2_0.Responses.CreationResponse;
+import ma.ensias.projetjee2_0.Responses.GetPostResponse;
 import ma.ensias.projetjee2_0.entites.*;
+import ma.ensias.projetjee2_0.repositories.CommentRepository;
 import ma.ensias.projetjee2_0.repositories.PostRepository;
 import ma.ensias.projetjee2_0.repositories.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -18,6 +21,9 @@ public class PostService {
     PostRepository postRepository;
     @Autowired
     TopicRepository topicRepository;
+    @Autowired
+    CommentRepository commentRepository;
+
 
     Post post;
     Content content;
@@ -85,6 +91,19 @@ public class PostService {
     public CreationResponse NoTypeOfContent() {
         errors.put("fields","missing type of content field value");
         return new CreationResponse(false,errors);
+    }
+
+    public GetPostResponse getPost(int id){
+        ArrayList<Comment> commentslist = new ArrayList<>();
+
+        Post postObj = postRepository.findById(id);
+
+        if(postObj == null){
+            return new GetPostResponse(false, "Post inexistant");
+        } else {
+            commentslist = commentRepository.findByPost_idEquals(postObj.getId());
+            return new GetPostResponse(true, postObj, commentslist);
+        }
     }
 
 }
