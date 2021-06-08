@@ -1,1 +1,2 @@
-# Projet-jee-2.0-
+# Projet JEE 2.0 (Spring boot)
+Le but du projet est de créer un *forum web du style Reddit*. Le site web contiendra donc des topiques, que les utilisateurs peuvent **rejoindre** pour y **poster**, **commenter** ou **voter**. L'application permet aussi des posts spéciaux, dits d'événement. Les utilisateurs peuvent alors **souscrire** à l'événement, et si jamais le nombre de souscris dépasse un seuil, un nouveau topique dédié à cet événement sera créé, et les utilisateurs souscrits à l'événement le rejoindront automatiquement. Ce topique va servir à discuter davantage de tout ce qui concerne cet évent.
