@@ -2,6 +2,7 @@ package ma.ensias.projetjee2_0.Services;
 
 import ma.ensias.projetjee2_0.Responses.CreationResponse;
 import ma.ensias.projetjee2_0.Responses.GetTopicResponse;
+import ma.ensias.projetjee2_0.Responses.SearchResponse;
 import ma.ensias.projetjee2_0.entites.Member;
 import ma.ensias.projetjee2_0.entites.Post;
 import ma.ensias.projetjee2_0.entites.Topic;
@@ -123,7 +124,9 @@ public class TopicService {
         Topic topic = topicRepository.findById(id);
         if(topic == null)
         {
-            return new GetTopicResponse(false,"Nonexistent topic");
+            HashMap<String,String> errors = new HashMap<String,String>();
+            errors.put("topic","Nonexistent topic");
+            return new GetTopicResponse(false,errors);
         }
         GetTopicResponse response = new GetTopicResponse(true,topic);
         if(user != null)
@@ -133,5 +136,17 @@ public class TopicService {
 
         response.setPosts((ArrayList<Post>) postRepository.findAllByTopic_idEquals(topic.getId()));
         return response;
+    }
+
+    public SearchResponse searchTopic(String searchtop) {
+        boolean success = true;
+        ArrayList<Topic> topics = new ArrayList<>();
+
+        topics = topicRepository.findTopicsByTitleContaining(searchtop);
+
+        if (topics.size() == 0) {
+            success = false;
+        } 
+        return new SearchResponse(success, topics);
     }
 }

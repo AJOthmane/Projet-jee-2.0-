@@ -4,12 +4,13 @@ import ma.ensias.projetjee2_0.entites.Post;
 import ma.ensias.projetjee2_0.entites.Topic;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class GetTopicResponse {
     private  boolean success;
-    private String errors;
+    private Map<String,String> errors;
 
-    public GetTopicResponse(boolean success, String errors) {
+    public GetTopicResponse(boolean success, Map<String,String> errors) {
         this.success = success;
         this.errors = errors;
     }
@@ -22,11 +23,11 @@ public class GetTopicResponse {
         this.success = success;
     }
 
-    public String getErrors() {
+    public Map<String,String> getErrors() {
         return errors;
     }
 
-    public void setErrors(String errors) {
+    public void setErrors(Map<String,String> errors) {
         this.errors = errors;
     }
 
