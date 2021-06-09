@@ -11,7 +11,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:9000","https://shipit-spring.web.app")
+                .allowedOrigins("http://localhost:9000","http://shipit-spring.web.app")
                 .allowCredentials(true)
                 .allowedMethods("PUT", "GET", "POST", "DELETE", "OPTION", "PATCH");
     }
